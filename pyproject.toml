@@ -43,13 +43,9 @@ select = [
     "E",      # pycodestyle errors
     "W",      # pycodestyle warnings
     "F",      # Pyflakes
-    "I",      # isort
     "B",      # flake8-bugbear
 ]
 ignore = []
-
-[tool.ruff.lint.isort]
-known-first-party = ["tic_tac_toe"]
 
 # ============================================================================
 # Type Checking Configuration (mypy)
