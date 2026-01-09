@@ -13,7 +13,6 @@ import unittest
 from unittest.mock import patch
 
 from tic_tac_toe import (
-    Difficulty,
     GameResult,
     Scoreboard,
     check_winner,
