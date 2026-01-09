@@ -281,7 +281,7 @@ def find_winning_move(board: Board, player: str) -> Optional[int]:
     return None
 
 
-def minimax(board: Board, is_maximizing: bool, player: str, opponent: str) -> int:
+def minimax(board: Board, is_maximizing: bool, player: str, opponent: str) -> float:
     """
     @brief Minimax algorithm for optimal move calculation.
 
@@ -296,16 +296,16 @@ def minimax(board: Board, is_maximizing: bool, player: str, opponent: str) -> in
     """
     # Terminal states
     if check_winner(board, opponent):
-        return -10
+        return -10.0
     if check_winner(board, player):
-        return 10
+        return 10.0
     if is_board_full(board):
-        return 0
+        return 0.0
 
     available = get_available_moves(board)
 
     if is_maximizing:
-        best_score = -float("inf")
+        best_score: float = float("-inf")
         for move in available:
             make_move(board, move, player)
             score = minimax(board, False, player, opponent)
@@ -341,7 +341,7 @@ def computer_move_hard(board: Board, computer: str, human: str) -> int:
     if len(available) == 9:
         return random.choice([1, 3, 5, 7, 9])
 
-    best_score = -float("inf")
+    best_score: float = float("-inf")
     best_move = available[0]
 
     for move in available:
