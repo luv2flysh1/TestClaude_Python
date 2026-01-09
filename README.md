@@ -1,5 +1,7 @@
 # Tic Tac Toe
 
+[![CI](https://github.com/luv2flysh1/TestClaude_Python/actions/workflows/ci.yml/badge.svg)](https://github.com/luv2flysh1/TestClaude_Python/actions/workflows/ci.yml)
+
 A command-line Tic Tac Toe game written in Python with multiple game modes.
 
 ## Features
@@ -18,8 +20,8 @@ A command-line Tic Tac Toe game written in Python with multiple game modes.
 Clone the repository:
 
 ```bash
-git clone https://github.com/yourusername/tic-tac-toe.git
-cd tic-tac-toe
+git clone https://github.com/luv2flysh1/TestClaude_Python.git
+cd TestClaude_Python
 ```
 
 ## Usage
