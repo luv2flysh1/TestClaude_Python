@@ -445,9 +445,7 @@ class TestComputerMoveEasy(unittest.TestCase):
         self.assertIn(move, [8, 9])
 
     @patch("tic_tac_toe.random.random")
-    def test_computer_move_easy_smart_mode_wins(
-        self, mock_random: Any
-    ) -> None:
+    def test_computer_move_easy_smart_mode_wins(self, mock_random: Any) -> None:
         """
         @brief Verify easy AI takes winning move in smart mode.
         """
@@ -461,9 +459,7 @@ class TestComputerMoveEasy(unittest.TestCase):
         self.assertEqual(move, 3)
 
     @patch("tic_tac_toe.random.random")
-    def test_computer_move_easy_smart_mode_blocks(
-        self, mock_random: Any
-    ) -> None:
+    def test_computer_move_easy_smart_mode_blocks(self, mock_random: Any) -> None:
         """
         @brief Verify easy AI blocks in smart mode when can't win.
         """
