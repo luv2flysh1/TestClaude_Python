@@ -390,8 +390,9 @@ def computer_move_easy(board: Board, computer: str, human: str) -> int:
     return random.choice(available)
 
 
-def get_computer_move(board: Board, computer: str, human: str,
-                      difficulty: Difficulty) -> int:
+def get_computer_move(
+    board: Board, computer: str, human: str, difficulty: Difficulty
+) -> int:
     """
     @brief Get the computer's move based on difficulty setting.
 
