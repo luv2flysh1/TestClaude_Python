@@ -68,7 +68,6 @@ jobs:
 
       - name: Run Ruff formatter check
         run: |
-          ruff format --diff .
           ruff format --check .
 
       - name: Run mypy type checker
