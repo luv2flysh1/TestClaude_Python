@@ -427,8 +427,8 @@ def get_player_move(board: Board, player_name: str = "Player") -> int:
     """
     while True:
         try:
-            move = input(f"{player_name}, enter your move (1-9): ").strip()
-            move = int(move)
+            move_input = input(f"{player_name}, enter your move (1-9): ").strip()
+            move = int(move_input)
             if is_valid_move(board, move):
                 return move
             else:
