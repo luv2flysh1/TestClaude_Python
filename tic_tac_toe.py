@@ -600,7 +600,8 @@ def main() -> None:
         # Check if game mode changed and offer to reset scores
         if last_game_mode is not None and current_mode != last_game_mode:
             if scoreboard.games_played > 1:
-                reset = input("\nGame mode changed. Reset scores? (y/n): ").strip().lower()
+                reset = input("\nGame mode changed. Reset scores? (y/n): ")
+                reset = reset.strip().lower()
                 if reset == "y":
                     scoreboard.reset()
                     print("Scores have been reset!")
