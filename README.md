@@ -2,14 +2,16 @@
 
 [![CI](https://github.com/luv2flysh1/TestClaude_Python/actions/workflows/ci.yml/badge.svg)](https://github.com/luv2flysh1/TestClaude_Python/actions/workflows/ci.yml)
 
-A command-line Tic Tac Toe game written in Python with multiple game modes.
+A Tic Tac Toe game written in Python with a modern GUI and multiple game modes.
 
 ## Features
 
+- **Graphical Interface**: Clean, dark-themed GUI built with Tkinter
 - **Easy Mode**: Play against a beatable AI that makes mistakes
 - **Hard Mode**: Play against an unbeatable AI using the minimax algorithm
 - **Two Player Mode**: Play locally against another person
 - **Session Scoreboard**: Tracks wins, losses, and draws across multiple games
+- **Command-Line Option**: Text-based interface also available
 
 ## Requirements
 
@@ -26,13 +28,32 @@ cd TestClaude_Python
 
 ## Usage
 
-Run the game:
+### GUI Version (Recommended)
+
+Run the graphical interface:
+
+```bash
+python tic_tac_toe_gui.py
+```
+
+### Command-Line Version
+
+Run the text-based game:
 
 ```bash
 python tic_tac_toe.py
 ```
 
-### How to Play
+### How to Play (GUI)
+
+1. Select a game mode (Easy, Hard, or Two Player)
+2. Click on any empty cell to place your mark
+3. Try to get three in a row!
+4. After each game, click "New Game" to play again
+5. Use "Change Mode" to switch game modes
+6. Use "Reset Scores" to clear the scoreboard
+
+### How to Play (Command-Line)
 
 1. Select a game mode (Easy, Hard, or Two Player)
 2. Enter position numbers (1-9) to place your mark
@@ -91,7 +112,8 @@ ruff check --fix .
 
 ```
 tic-tac-toe/
-├── tic_tac_toe.py       # Main game module
+├── tic_tac_toe.py       # Game logic module (CLI interface)
+├── tic_tac_toe_gui.py   # Tkinter GUI interface
 ├── test_tic_tac_toe.py  # Unit tests
 ├── pyproject.toml       # Project configuration & static analysis settings
 ├── README.md            # This file
@@ -126,8 +148,12 @@ The hard AI uses the minimax algorithm to evaluate all possible game states and 
 
 ## Session Scoreboard
 
-The game tracks scores across your gaming session:
+Both versions track scores across your gaming session, showing wins for each player and total draws.
 
+### GUI Scoreboard
+The GUI displays a prominent scoreboard below the game board that updates automatically after each game. Winning cells are highlighted in green, and the "New Game" button lights up to prompt you to continue.
+
+### CLI Scoreboard
 ```
 ========================================
             SCOREBOARD
@@ -144,8 +170,6 @@ After each game, you can:
 2. **Change game mode** - Switch between Easy/Hard/Two Player
 3. **Reset scores** - Start fresh with zero scores
 4. **Quit** - Exit and see final scores
-
-When switching game modes, you'll be prompted to optionally reset the scores.
 
 ## License
 
