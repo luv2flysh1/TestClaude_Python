@@ -21,6 +21,7 @@ class GameMode(Enum):
     """
     @brief Enumeration of available game modes.
     """
+
     EASY = 1
     HARD = 2
     TWO_PLAYER = 3
@@ -30,6 +31,7 @@ class Difficulty(Enum):
     """
     @brief Enumeration of AI difficulty levels.
     """
+
     EASY = 1
     HARD = 2
 
@@ -38,6 +40,7 @@ class GameResult(Enum):
     """
     @brief Enumeration of possible game outcomes.
     """
+
     PLAYER1_WIN = 1  # Human wins in vs computer, Player 1 wins in two player
     PLAYER2_WIN = 2  # Computer wins in vs computer, Player 2 wins in two player
     DRAW = 3
@@ -51,6 +54,7 @@ class Scoreboard:
     Maintains win counts for both players and draws. Provides methods
     to record game results and display the current score.
     """
+
     player1_name: str = "Player 1"
     player2_name: str = "Player 2"
     player1_wins: int = 0
