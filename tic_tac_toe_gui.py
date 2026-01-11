@@ -10,7 +10,6 @@ reusing the game logic from tic_tac_toe.py.
 """
 
 import tkinter as tk
-from tkinter import font as tkfont
 from typing import Optional
 
 from tic_tac_toe import (
@@ -22,7 +21,6 @@ from tic_tac_toe import (
     check_winner,
     create_board,
     get_computer_move,
-    get_position,
     is_board_full,
     is_valid_move,
     make_move,
@@ -41,7 +39,6 @@ COLORS = {
     "button_hover": "#1a4a7a",
     "win_highlight": "#4ade80",
     "cell_bg": "#16213e",
-    "cell_border": "#0f3460",
 }
 
 
@@ -60,7 +57,11 @@ class TicTacToeGUI:
         self.root = tk.Tk()
         self.root.title("Tic Tac Toe")
         self.root.configure(bg=COLORS["background"])
-        self.root.resizable(False, False)
+        self.root.minsize(350, 500)
+
+        # Configure root grid to expand
+        self.root.grid_rowconfigure(0, weight=1)
+        self.root.grid_columnconfigure(0, weight=1)
 
         # Game state
         self.board: Board = create_board()
@@ -82,13 +83,6 @@ class TicTacToeGUI:
         self.mode_frame: Optional[tk.Frame] = None
         self.game_frame: Optional[tk.Frame] = None
 
-        # Create fonts
-        self.title_font = tkfont.Font(family="Helvetica", size=32, weight="bold")
-        self.cell_font = tkfont.Font(family="Helvetica", size=36, weight="bold")
-        self.status_font = tkfont.Font(family="Helvetica", size=14)
-        self.button_font = tkfont.Font(family="Helvetica", size=11, weight="bold")
-        self.score_font = tkfont.Font(family="Helvetica", size=12)
-
         # Build UI
         self._create_mode_frame()
         self._create_game_frame()
@@ -100,47 +94,55 @@ class TicTacToeGUI:
         """
         self.mode_frame = tk.Frame(self.root, bg=COLORS["background"])
 
+        # Configure grid weights for centering
+        self.mode_frame.grid_rowconfigure(0, weight=1)
+        self.mode_frame.grid_rowconfigure(5, weight=1)
+        self.mode_frame.grid_columnconfigure(0, weight=1)
+
         # Title
         title = tk.Label(
             self.mode_frame,
             text="TIC TAC TOE",
-            font=self.title_font,
+            font=("Helvetica", 28, "bold"),
             fg=COLORS["white"],
             bg=COLORS["background"],
         )
-        title.pack(pady=(40, 30))
+        title.grid(row=1, column=0, pady=(0, 10))
 
         # Subtitle
         subtitle = tk.Label(
             self.mode_frame,
             text="Select Game Mode",
-            font=self.status_font,
+            font=("Helvetica", 12),
             fg=COLORS["o_color"],
             bg=COLORS["background"],
         )
-        subtitle.pack(pady=(0, 20))
+        subtitle.grid(row=2, column=0, pady=(0, 20))
 
-        # Mode buttons
+        # Mode buttons container
+        btn_frame = tk.Frame(self.mode_frame, bg=COLORS["background"])
+        btn_frame.grid(row=3, column=0)
+
         modes = [
             ("Easy Mode", "Beatable AI (30% smart)", self._select_easy),
             ("Hard Mode", "Unbeatable AI (Minimax)", self._select_hard),
             ("Two Player", "Local Multiplayer", self._select_two_player),
         ]
 
-        for text, desc, command in modes:
-            frame = tk.Frame(self.mode_frame, bg=COLORS["background"])
-            frame.pack(pady=10)
+        for i, (text, desc, command) in enumerate(modes):
+            frame = tk.Frame(btn_frame, bg=COLORS["background"])
+            frame.pack(pady=8)
 
             btn = tk.Button(
                 frame,
                 text=text,
-                font=self.button_font,
+                font=("Helvetica", 11, "bold"),
                 fg=COLORS["white"],
                 bg=COLORS["button_bg"],
                 activebackground=COLORS["button_hover"],
                 activeforeground=COLORS["white"],
-                width=20,
-                height=2,
+                width=18,
+                height=1,
                 relief=tk.FLAT,
                 cursor="hand2",
                 command=command,
@@ -150,7 +152,7 @@ class TicTacToeGUI:
             desc_label = tk.Label(
                 frame,
                 text=desc,
-                font=("Helvetica", 10),
+                font=("Helvetica", 9),
                 fg="#888888",
                 bg=COLORS["background"],
             )
@@ -162,29 +164,42 @@ class TicTacToeGUI:
         """
         self.game_frame = tk.Frame(self.root, bg=COLORS["background"])
 
+        # Configure grid weights for responsive layout
+        self.game_frame.grid_rowconfigure(2, weight=1)  # Board row expands
+        self.game_frame.grid_columnconfigure(0, weight=1)
+
         # Header
         self.header_label = tk.Label(
             self.game_frame,
             text="",
-            font=self.status_font,
+            font=("Helvetica", 12),
             fg=COLORS["white"],
             bg=COLORS["background"],
         )
-        self.header_label.pack(pady=(20, 10))
+        self.header_label.grid(row=0, column=0, pady=(10, 5), sticky="ew")
 
         # Status
         self.status_label = tk.Label(
             self.game_frame,
             text="",
-            font=self.status_font,
+            font=("Helvetica", 11),
             fg=COLORS["o_color"],
             bg=COLORS["background"],
         )
-        self.status_label.pack(pady=(0, 15))
+        self.status_label.grid(row=1, column=0, pady=(0, 10), sticky="ew")
 
-        # Board frame
-        board_frame = tk.Frame(self.game_frame, bg=COLORS["background"])
-        board_frame.pack(pady=10)
+        # Board frame - this will expand
+        board_container = tk.Frame(self.game_frame, bg=COLORS["background"])
+        board_container.grid(row=2, column=0, sticky="nsew", padx=20, pady=10)
+
+        # Configure board container to center the board
+        board_container.grid_rowconfigure(0, weight=1)
+        board_container.grid_rowconfigure(2, weight=1)
+        board_container.grid_columnconfigure(0, weight=1)
+        board_container.grid_columnconfigure(2, weight=1)
+
+        board_frame = tk.Frame(board_container, bg=COLORS["background"])
+        board_frame.grid(row=1, column=1)
 
         self.buttons = []
         for row in range(3):
@@ -193,9 +208,9 @@ class TicTacToeGUI:
                 btn = tk.Button(
                     board_frame,
                     text="",
-                    font=self.cell_font,
-                    width=4,
-                    height=2,
+                    font=("Helvetica", 32, "bold"),
+                    width=3,
+                    height=1,
                     fg=COLORS["white"],
                     bg=COLORS["cell_bg"],
                     activebackground=COLORS["button_hover"],
@@ -203,102 +218,97 @@ class TicTacToeGUI:
                     cursor="hand2",
                     command=lambda r=row, c=col: self._on_cell_click(r, c),
                 )
-                btn.grid(row=row, column=col, padx=3, pady=3)
+                btn.grid(row=row, column=col, padx=2, pady=2)
                 button_row.append(btn)
             self.buttons.append(button_row)
 
         # Scoreboard
-        score_frame = tk.Frame(self.game_frame, bg=COLORS["primary"], padx=20, pady=15)
-        score_frame.pack(pady=20, fill=tk.X, padx=20)
+        score_frame = tk.Frame(self.game_frame, bg=COLORS["primary"])
+        score_frame.grid(row=3, column=0, sticky="ew", padx=15, pady=10)
 
         score_title = tk.Label(
             score_frame,
             text="SCOREBOARD",
-            font=("Helvetica", 14, "bold"),
+            font=("Helvetica", 11, "bold"),
             fg=COLORS["o_color"],
             bg=COLORS["primary"],
         )
-        score_title.pack()
+        score_title.pack(pady=(8, 2))
 
         self.score_label = tk.Label(
             score_frame,
             text="",
-            font=("Helvetica", 16, "bold"),
+            font=("Helvetica", 13, "bold"),
             fg=COLORS["white"],
             bg=COLORS["primary"],
         )
-        self.score_label.pack(pady=(8, 0))
+        self.score_label.pack(pady=(2, 2))
 
         self.games_label = tk.Label(
             score_frame,
             text="",
-            font=("Helvetica", 12),
+            font=("Helvetica", 10),
             fg="#aaaaaa",
             bg=COLORS["primary"],
         )
-        self.games_label.pack(pady=(5, 0))
+        self.games_label.pack(pady=(0, 8))
 
         # Control buttons
         control_frame = tk.Frame(self.game_frame, bg=COLORS["background"])
-        control_frame.pack(pady=10)
+        control_frame.grid(row=4, column=0, pady=(5, 15))
 
-        # New Game button (store reference to highlight it later)
+        # New Game button
         self.new_game_btn = tk.Button(
             control_frame,
             text="New Game",
-            font=("Helvetica", 12, "bold"),
+            font=("Helvetica", 10, "bold"),
             fg=COLORS["white"],
             bg=COLORS["accent"],
             activebackground=COLORS["button_hover"],
             activeforeground=COLORS["white"],
             relief=tk.FLAT,
             cursor="hand2",
-            padx=15,
-            pady=8,
+            padx=12,
+            pady=4,
             command=self._new_game,
         )
-        self.new_game_btn.pack(side=tk.LEFT, padx=5)
+        self.new_game_btn.pack(side=tk.LEFT, padx=4)
 
         # Other control buttons
-        other_controls = [
-            ("Change Mode", self._change_mode),
-            ("Reset Scores", self._reset_scores),
-        ]
-
-        for text, command in other_controls:
+        for text, command in [("Change Mode", self._change_mode), ("Reset Scores", self._reset_scores)]:
             btn = tk.Button(
                 control_frame,
                 text=text,
-                font=("Helvetica", 10),
+                font=("Helvetica", 9),
                 fg=COLORS["white"],
                 bg=COLORS["accent"],
                 activebackground=COLORS["button_hover"],
                 activeforeground=COLORS["white"],
                 relief=tk.FLAT,
                 cursor="hand2",
-                padx=10,
-                pady=5,
+                padx=8,
+                pady=4,
                 command=command,
             )
-            btn.pack(side=tk.LEFT, padx=5)
+            btn.pack(side=tk.LEFT, padx=4)
 
     def show_mode_selection(self) -> None:
         """
         @brief Show the mode selection screen.
         """
         if self.game_frame:
-            self.game_frame.pack_forget()
+            self.game_frame.grid_forget()
         if self.mode_frame:
-            self.mode_frame.pack(fill=tk.BOTH, expand=True, padx=20, pady=20)
+            self.mode_frame.grid(row=0, column=0, sticky="nsew")
 
     def show_game_frame(self) -> None:
         """
         @brief Show the game board screen.
         """
         if self.mode_frame:
-            self.mode_frame.pack_forget()
+            self.mode_frame.grid_forget()
         if self.game_frame:
-            self.game_frame.pack(fill=tk.BOTH, expand=True)
+            self.game_frame.grid(row=0, column=0, sticky="nsew")
 
     def _select_easy(self) -> None:
         """
@@ -617,10 +627,9 @@ class TicTacToeGUI:
         """
         @brief Start the main event loop.
         """
-        # Center the window
-        self.root.update_idletasks()
-        width = 450
-        height = 680
+        # Set initial window size and center it
+        width = 400
+        height = 550
         x = (self.root.winfo_screenwidth() // 2) - (width // 2)
         y = (self.root.winfo_screenheight() // 2) - (height // 2)
         self.root.geometry(f"{width}x{height}+{x}+{y}")
