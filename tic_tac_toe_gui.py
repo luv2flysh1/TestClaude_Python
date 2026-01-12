@@ -129,7 +129,7 @@ class TicTacToeGUI:
             ("Two Player", "Local Multiplayer", self._select_two_player),
         ]
 
-        for i, (text, desc, command) in enumerate(modes):
+        for text, desc, command in modes:
             frame = tk.Frame(btn_frame, bg=COLORS["background"])
             frame.pack(pady=8)
 
@@ -275,7 +275,11 @@ class TicTacToeGUI:
         self.new_game_btn.pack(side=tk.LEFT, padx=4)
 
         # Other control buttons
-        for text, command in [("Change Mode", self._change_mode), ("Reset Scores", self._reset_scores)]:
+        other_controls = [
+            ("Change Mode", self._change_mode),
+            ("Reset Scores", self._reset_scores),
+        ]
+        for text, command in other_controls:
             btn = tk.Button(
                 control_frame,
                 text=text,
@@ -389,8 +393,12 @@ class TicTacToeGUI:
             return
 
         if self.game_mode == GameMode.TWO_PLAYER:
-            player_name = "Player 1" if self.current_player == "X" else "Player 2"
-            self.status_label.config(text=f"{player_name}'s turn ({self.current_player})")
+            if self.current_player == "X":
+                player_name = "Player 1"
+            else:
+                player_name = "Player 2"
+            turn_text = f"{player_name}'s turn ({self.current_player})"
+            self.status_label.config(text=turn_text)
         else:
             if self.current_player == "X":
                 self.status_label.config(text="Your turn (X)")
@@ -420,13 +428,13 @@ class TicTacToeGUI:
         @brief Update the scoreboard display.
         """
         if self.score_label:
-            self.score_label.config(
-                text=f"{self.scoreboard.player1_name}: {self.scoreboard.player1_wins}  |  "
-                f"{self.scoreboard.player2_name}: {self.scoreboard.player2_wins}  |  "
-                f"Draws: {self.scoreboard.draws}"
-            )
+            p1 = f"{self.scoreboard.player1_name}: {self.scoreboard.player1_wins}"
+            p2 = f"{self.scoreboard.player2_name}: {self.scoreboard.player2_wins}"
+            draws = f"Draws: {self.scoreboard.draws}"
+            self.score_label.config(text=f"{p1}  |  {p2}  |  {draws}")
         if self.games_label:
-            self.games_label.config(text=f"Games Played: {self.scoreboard.games_played}")
+            games_text = f"Games Played: {self.scoreboard.games_played}"
+            self.games_label.config(text=games_text)
 
     def _on_cell_click(self, row: int, col: int) -> None:
         """
@@ -455,7 +463,8 @@ class TicTacToeGUI:
         self._switch_player()
 
         # If vs computer, schedule computer move
-        if self.game_mode in (GameMode.EASY, GameMode.HARD) and self.current_player == "O":
+        is_vs_computer = self.game_mode in (GameMode.EASY, GameMode.HARD)
+        if is_vs_computer and self.current_player == "O":
             self._schedule_computer_move()
 
     def _switch_player(self) -> None:
@@ -482,7 +491,10 @@ class TicTacToeGUI:
             self.waiting_for_computer = False
             return
 
-        difficulty = Difficulty.EASY if self.game_mode == GameMode.EASY else Difficulty.HARD
+        if self.game_mode == GameMode.EASY:
+            difficulty = Difficulty.EASY
+        else:
+            difficulty = Difficulty.HARD
         move = get_computer_move(self.board, "O", "X", difficulty)
         make_move(self.board, move, "O")
         self._update_board_display()
