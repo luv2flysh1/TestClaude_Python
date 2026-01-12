@@ -13,6 +13,12 @@ A Tic Tac Toe game written in Python with a modern GUI and multiple game modes.
 - **Session Scoreboard**: Tracks wins, losses, and draws across multiple games
 - **Command-Line Option**: Text-based interface also available
 
+## Screenshots
+
+| Mode Selection | Gameplay |
+|:--------------:|:--------:|
+| ![Mode Selection](screenshot-mode-select.png) | ![Gameplay](screenshot-gameplay.png) |
+
 ## Requirements
 
 - Python 3.10 or higher
